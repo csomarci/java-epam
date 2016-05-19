@@ -5,7 +5,12 @@ public class PerfectNumber {
 		if (args.length != 1){
 			throw new IllegalArgumentException("Use a command line argument!");
 		}
-		System.out.print(IsPerfectNumber(Integer.parseInt(args[0])));
+		try {
+			System.out.print(IsPerfectNumber(Integer.parseInt(args[0])));
+		}
+		catch (Exception e){
+			System.out.print("Illegal argument!");
+		}
 	}
 	
 	public static boolean IsPerfectNumber(int number){

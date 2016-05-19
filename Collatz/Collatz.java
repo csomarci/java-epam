@@ -5,7 +5,12 @@ public class Collatz {
 		if (args.length != 1){
 			throw new IllegalArgumentException("Use a command line argument!");
 		}
-		Collatz(Integer.parseInt(args[0]));
+		try{
+			Collatz(Integer.parseInt(args[0]));
+		}
+		catch (Exception e){
+			System.out.print("Illegal argument!");
+		}
 	}
 	
 	public static void Collatz(int number){

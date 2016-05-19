@@ -5,10 +5,15 @@ public class C2F {
 		if (args.length != 2){
 			throw new IllegalArgumentException("Use a command line argument!");
 		}
-		if (Integer.parseInt(args[0]) == 0){
-			System.out.print(celsiusToFahrenheit(Double.parseDouble(args[1])) + " Fahrenheit");
-		} else {
-			System.out.print(fahrenheitToCelsius(Double.parseDouble(args[1])) + " Celsius");
+		try{
+			if (Integer.parseInt(args[0]) == 0){
+				System.out.print(celsiusToFahrenheit(Double.parseDouble(args[1])) + " Fahrenheit");
+			} else {
+				System.out.print(fahrenheitToCelsius(Double.parseDouble(args[1])) + " Celsius");
+			}
+		}
+		catch (Exception e){
+			System.out.print("Illegal argument!");
 		}
 	}
 	
