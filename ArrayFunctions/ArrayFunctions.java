@@ -6,8 +6,11 @@ public class ArrayFunctions {
 		System.out.println(avg(arr));
 		double[] norm = norm(arr);
 		for (double element : norm){
-			System.out.print(element + ",");
+			System.out.print(element + " ");
 		}
+		System.out.print("\n");
+		System.out.println(join(arr));
+		System.out.println(join(arr, ';'));
 	}
 	
 	public static int sum (int[] array){
@@ -29,5 +32,27 @@ public class ArrayFunctions {
 			result[i] = (double)array[i] / (double)sum;
 		}
 		return result;
+	}
+	
+	public static String join (int[] array){
+		StringBuilder str = new StringBuilder();
+		for (int i = 0; i < array.length; i++){
+			str.append(array[i]);
+			if (i != array.length - 1){
+				str.append(",");
+			}
+		}
+		return str.toString();
+	}
+	
+	public static String join (int[] array, char separator){
+		StringBuilder str = new StringBuilder();
+		for (int i = 0; i < array.length; i++){
+			str.append(array[i]);
+			if (i != array.length - 1){
+				str.append(separator);
+			}
+		}
+		return str.toString();
 	}
 }
