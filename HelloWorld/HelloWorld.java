@@ -7,7 +7,7 @@
 public class HelloWorld {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!\nThis is a new line" );
+        System.out.println("Hello "+System.getProperty("name")+ " World!\nThis is a new line" );
     }
 
 }
