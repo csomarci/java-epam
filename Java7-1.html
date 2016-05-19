@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Java basics 1.</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+    @import url(http://fonts.googleapis.com/css?family=Droid+Serif);
+    @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+
+    body { font-family: 'Droid Serif'; }
+    h1, h2, h3 {
+      font-family: 'Yanone Kaffeesatz';
+      font-weight: 400;
+      margin-bottom: 0;
+      margin-top: 10px;
+    }
+    h1 { font-size: 3.5em; }
+    h2 { font-size: 3em; }
+    h3 { font-size: 1.6em; }
+
+    code {
+        -moz-border-radius: 5px;
+        -web-border-radius: 5px;
+        background: #e7e8e2;
+        border-radius: 5px;
+        //font-size: 16px;
+      }
+	  
+	tr:nth-of-type(even) {
+		background-color:#F0F0F0;
+	}
+  
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Java Basics
+Denes Varga, Richard O. Legendi, Peter Veres
+
+
+---
+
+# Agenda
+
+1. Setup
+1. Naming Conventions
+1. Separators
+1. Compilation
+1. Packages
+1. Statements
+1. Operators
+1. String
+1. Primitives
+1. Object
+1. Arrays
+1. Enumerations
+1. Methods
+1. Variable Scopes
+1. Constructor
+1. Static Methods
+1. Static Fields
+1. Collections
+1. Inheritance
+1. Annotations
+1. Exceptions
+
+---
+
+# Setup
+
+- Uninstall every _Java Development Kit (JDK)_ and _Java Runtime Environment (JRE)_
+- Download 1.7 latest zip (http://www.oracle.com -> Downloads -> Java for Developers -> Java Platform (JDK) 7 latest)
+- Extract to a correct path (no spaces in it)
+- Set `JAVA_HOME` and `PATH` environment variables
+- Install your favourite editor
+
+--
+- Verification: _Windows + R_, `cmd`:
+```
+C:\Users\java7> PATH=%PATH%;C:\Java\jdk1.7.0_60\bin
+C:\Users\java7> echo %PATH%
+...;C:\Java\jdk1.7.0_60\bin
+C:\Users\java7> javac -version
+javac jdk1.7.0_60
+```
+--
+- Permanent solution: _Windows + Break, Advanced system settings, Environment variables..._, then set `PATH` and `JAVA_HOME`
+
+---
+
+# Info!
+
+- [Java reference](http://docs.oracle.com/javase/7/docs/api/)
+- [Java tutorial](http://download.oracle.com/javase/tutorial/reallybigindex.html)
+- [Java Language Specification](http://docs.oracle.com/javase/specs/)
+-- HTML, PDF
+- `src.zip` :-)
+
+---
+
+# Naming Conventions
+
+| Element                          | Lettering                                                   | Characteristic                                             | Example             |
+|----------------------------------|-------------------------------------------------------------|------------------------------------------------------------|---------------------|
+| Class name                       | Begins uppercase continues camel case                       | Noun                                                       | `OfficeBuilding`    |
+| Interface name                   | Same as class name                                          | Adjective ending when possible, like "able" or "ible"      | `Paintable`         |
+| Method name                      | Begins lowercase continues camel case                       | Verb                                                       | `prepare`           |
+| Instance & static variable names | Same as method names                                        | Noun                                                       | `color`             |
+| Parameters and local variables   | same as variable names                                      | Single words, acronyms or abbreviations                    | `colorCode`         |
+| Generic Type parameters          | Single uppercase letter                                     | Letter T is recommended                                    | `T`                 |
+| Constant                         | All uppercase letters                                       | Multiple words separated by underscores                    | `BLUE_CODE`         |
+| Enumeration                      | Same as class names; set of object should be like constants | Noun                                                       | `enum WorkNeeded {PAINT_ONLY, RENOVATION_ONLY, PAINT_AND_RENOVATION}` |
+| Package                          | All lowercase letters                                       | Public packages should be reversed domain name of the org. | `com.epam.training` |
+
+**Details:** [Java Code Conventions](http://www.oracle.com/technetwork/java/codeconventions-150003.pdf)
+
+---
+# Sample
+
+```java
+package foo.bar; // top-level domain, lower case
+
+/**
+ * Class description...
+ *
+ * @author Mr. T
+ * @version 1.0
+ */
+public class Foo extends Bar {
+
+    /** One liner comment for classVar. */
+    public int classVar;
+    /**
+     * Constructor comment...
+     */
+    public Foo() {
+        // ...
+    }
+    /**
+     * Comment for a simple function...
+     */
+    public void doSomething() {
+        // ...
+    }
+    /**
+     * Some tricky function comment...
+     *
+     * @param someParam arbitrary parameteer; cannot be <code>null</code>
+     * @return always 0
+     */
+    public int returnSomeValue(Object someParam) {
+        // ...
+    }
+}
+```
+
+---
+
+# Separators
+
+| Symbol   | Description                           | Purpose
+|----------|---------------------------------------|--------------------------------------------------------------------------------------------------------|
+| `( )`    | Parentheses                           | Encloses set of method arguments, encloses cast types, adjust precedence in arithmetic expressions.    |
+| `{ }`    | Curly brackets                        | Encloses code blocks and also initializes arrays.                                                      |
+| `[ ]`    | Brackets                              | Declares arrays and initializes arrays.                                                                |
+| `< >`    | Angle brackets                        | Encloses generics.                                                                                     |
+| `;`      | Semicolon                             | Terminates statements at the end of a line.                                                            |
+| `,`      | Comma                                 | Separates identifiers in variable declarations, separates values, separates expressions in a for loop. |
+| `.`      | Period                                | Delineates package names, selects an object field or method, supports method chaining.                 |
+| `:`      | Colon                                 | Follows loop labels and used in short form of if.                                                      |
+| `' '`    | Single quotes                         | Defines single characters.                                                                             |
+| `" "`    | Double quotes                         | Defines a string of characters.                                                                        |
+| `//`     | Forward slashes                       | Indicates a single line comment.                                                                       |
+| `/* */`  | Forward slashes with asterisks        | Indicates a block comment for multiple lines.                                                          |
+| `/** */` | Forward slashes with double asterisks | Indicates javadoc comments.                                                                            |
+
+---
+
+# Compilation
+
+Your first Java code:
+
+## HelloWorld.java
+``` java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+}
+```
+
+--
+## Compiling
+
+```
+javac HelloWorld.java
+```
+
+--
+## Execution
+
+```
+java HelloWorld
+```
+
+--
+## Generating docs
+
+```
+javadoc HelloWorld.java -d doc
+```
+
+---
+
+# Things to note
+- Name of the `public` class == name of the compilation unit
+- Std. Output: `System.out.println( ... );`
+- Std. Error: `System.err.println( ... );`
+- Escape sequences: `\r`, `\n` , `\t`, `\b`, etc. [Details](http://download.oracle.com/javase/tutorial/java/data/characters.html)
+- Exitting: `System.exit( 0 );`
+- Other useful functionalities in the [Javadoc of the System class](http://download.oracle.com/javase/6/docs/api/java/lang/System.html)
+- Handling the console: [java.io.Console](http://download.oracle.com/javase/6/docs/api/java/io/Console.html)
+
+???
+Show ConsoleTest from basics
+---
+
+# Compilation
+
+## Compilation process:
+
+- You create `.java` files (sourcecode).
+- Compiler compiles to `.class` files (bytecode).
+- Optionally jar can pack the files into a `.jar` file.
+- JVM interprets these bytecode files and does the work.
+	- What is JVM?
+		http://en.wikipedia.org/wiki/Java_virtual_machine
+---
+
+# Compilation
+
+## Compiler reference
+
+``` java
+javac [options] [sourcefiles] [@argfiles]
+```
+
+--
+
+- Important options:
+- `-d path` define output directory.
+- `-classpath` OR `-cp` define class path.
+- `-version` displays version information of the compiler.
+- OS wildcards may be used (`javac *.java` to compile the default package)
+
+--
+
+- Other arguments:
+    - `sourcefiles` should have `.java` extension
+    - `@argfiles` used for large number of arguments
+
+---
+
+# Compilation
+
+## Jar
+
+### About Jar
+- Ordinary ZIP file with metadata in `META-INF/MANIFEST.MF` file
+- Created and manipulated by `jar` tool
+
+--
+
+### Main usage
+- Create archive: `jar cf myJar.jar *.class`
+- Update archive: `jar uf myJar.jar MyClass.class`
+- Extract archive: `jar xf myJar.jar`
+- Test archive: `jar tf myJar.jar`
+
+--
+
+### Other useful options
+- `-v` for verbose 
+- `-f` for input/output file
+- `-m` for manifest file 
+- `-C dir` target directory
+
+---
+
+# Compilation
+
+## Execution
+
+- `java [options] myClass [arguments]`
+- `java [options] -jar myJar.jar [arguments]`
+
+
+--
+
+### Useful options
+- `-cp` or `-classpath` overrides the CLASSPATH environment variable.
+- `-Dkey=value` define or override system variable.
+
+--
+- `-version` display the version information.
+- `-Xms128m` initial memory allocation pool size.
+- `-Xmx1024m` maximum memory allocation pool size.
+
+???
+- JAR example: spaceinvaders 
+	- fix jconsole problem (%TEMP%\hsperfdata_Peter_Veres2 folder name is case sensitive
+	- jar cfe spaceinvaders.jar Game *.class *.gif
+	- java -jar dist\spaceinvaders.jar
+
+- options example: memory usage
+	- java MemoryLeak -Xmx100m
+	
+---
+
+
+# Compilation
+
+- For reference: http://docs.oracle.com/javase/7/docs/technotes/tools/index.html#basic
+
+---
+
+# Packages
+
+## Packages basics
+
+- Classes should be organized into packages
+- Package structure reflects the directory structure
+- Reverse domain package naming
+- Class coupling
+- System coupling
+- Maintainability
+
+--
+
+## Package statement
+
+- is optional (theoretically :)).
+- can occur once in a java file.
+- have to be the first line of the Java file.
+- couldn't start with `java.*` and `javax.*` since these are reserved package names.
+
+---
+
+# Packages
+
+## Import statements
+
+- Immediately after package statement.
+- Makes life easier: `new java.math.BigDeciaml(1)` -> `new BigDecimal(1)`
+- `java.lang.*` is automatically imported to every java file.
+- Examples:
+
+### Implicit import
+``` java
+import java.net.*;
+```
+### Explicit import
+``` java
+import java.net.URL;
+```
+
+### Implicit static import
+``` java
+import static java.math.BigDecimal.*;
+```
+
+### Explicit static import
+``` java
+import static java.math.BigDecimal.ONE;
+```
+---
+
+# Packages - sample
+```java
+import java.util.Vector;    // 1 type
+import java.math.*;         // Wildcard
+
+import java.awt.*;          // GUI
+import java.awt.event.*;    // GUI - Event handling
+import javax.swing.*;       // Improved GUI
+import java.util.*;         // Data structures
+import java.io.*;           // IO
+import java.util.regex.*;   // Regexp
+
+// static import: for all static members (functions, constants)
+import static java.lang.Math.*;
+```
+
+--
+# Packages - place
+```java
+package ...;
+
+// Import statements
+public class HelloWorld {
+    public static void main(String args[]) {
+        System.out.println("Hello World!");
+    }
+};
+```
+---
+# Packages - compilation
+- **Always do that from the package root!**
+- Compilation requires a full path:
+```
+$ javac pkg/HelloWorldApp.java
+```
+- Running requires fully qualified classname:
+```
+$ java pkg.HelloWorldApp
+```
+
+---
+# Packages - Recursive compilation
+```
+# Linux
+$ find -name "*.java" > sources.txt
+$ javac @sources.txt
+
+:: Windows
+> dir /s /B *.java > sources.txt
+> javac @sources.txt
+```
+???
+- example
+	- Let's move spaceinvaders into a proper package
+---
+
+# Statements
+
+## Expression statements
+
+| Statement           | Meaning           |
+|---------------------|-------------------|
+| `variableName = 7;` | Assignment        |
+| `++variableName;`   | Pre-increment     |
+| `--variableName;`   | Pre-decrement     |
+| `variableName++;`   | Post-increment    |
+| `variableName--;`   | Post-decrement    |
+| `methodName();`     | Method invocation |
+| `new MyClass();`    | Object creation   |
+
+???
+Show PrePost.java demo
+
+---
+
+# Statements
+
+## Conditional statements
+
+- if-then: expression type: `boolean`
+``` java
+if (value == 0) {
+    doSomething();
+}
+```
+- if-then-else: expression type: `boolean`
+``` java
+if (value == 0) {
+    doSomething();
+}else if (value >0) {
+    doSomethingElse();
+} else {
+    doFallbackThing();
+}
+```
+
+- switch: expression types: `char`, `byte`, `short`, `int`, `String` (*from Java 7*), enumeration types
+``` java 
+switch (num) {
+    case 100: doSomething();
+    case 200: doSomethingElse(); break;
+    default: doFallbackThing(); break;
+}
+```
+- Trenary operator:
+``` java
+int variable = (inputVariable == null) ? 0 : inputVariable;
+```
+
+---
+
+# Statements
+
+## Iteration statements
+
+- for-loop
+``` java
+for (int i=0; i<10; i++){
+    System.out.println(i);
+}
+```
+- foreach-loop
+``` java
+int numbers[] = {0,1,2,3,4,5,6,7,8,9}
+for (int i : numbers){
+    System.out.println(i);
+}
+```
+- while-loop
+``` java
+while (areWeThereNow){
+    doTravel();
+}
+```
+- do-while-loop
+``` java
+do {
+    doTravel();
+} while (areWeThereNow);
+```
+### Please avoid using `break` and `continue`!!!
+
+---
+
+# Statements
+
+## Reserved words
+
+- The most important ones: `abstract`, `break`, `case`, `catch`, `class`, `default`, `do`, `else`, `extends`, `final`, `finally`, `for`, `goto`, `if`, `implements`, `interface`, `return`, `strictfp`, `super`, `switch`, `synchronized`, `this`, `throw`, `throws`, `try`, `void`, `while`
+- The full list: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html
+
+???
+- `strictfp`: guarantees that results of floating-point calculations are identical on all platforms.
+---
+
+# Operators
+
+## Assignment Operators
+
+| Operator | Meaning                       |
+|----------|-------------------------------|
+| `=`      | Assignment                    |
+| `+=`     | Assignment by addition        |
+| `-=`     | Assignment by subtraction     |
+| `*=`     | Assignment by multiplication  |
+| `/=`     | Assignment by division        |
+| `%=`     | Assignment by modulo division |
+
+--
+
+## Arithmetic Operators
+
+|     |                |
+|-----|----------------|
+| `+` | Addition       |
+| `-` | Subtraction    |
+| `*` | Multiplication |
+| `/` | Division       |
+| `%` | Modulus        |
+
+- Value of the expression is the wider type of its operands.
+  - `double d = 1 / 2;`
+  - `byte b = 1+2; // compilation error`
+- Strict evaluation order:
+  - `System.out.println("" + i++ + ++i); // cf. C++`
+
+
+???
+- excercise: ArithmeticDemo.java
+	- what is written? 
+	
+  
+---
+
+# Operators
+
+## Relational Operators
+
+|      |                       |
+|------|-----------------------|
+| `==` | Equal to              |
+| `!=` | Not equal to          |
+| `<`  | Less than             |
+| `>`  | Greater than          |
+| `<=` | Less than or equal    |
+| `>=` | Greater than or equal |
+
+--
+
+## Logical Operators
+
+``` java
+ boolean ab = doA() | doB();
+ boolean cd = doC() || doD();
+ boolean ef = doE() & doF();
+ boolean gh = doG() && doH();
+ boolean ij = doI() ^ doJ();
+ boolean k = !dok();
+```
+---
+
+# Operators
+## Bitwise and Bit Shift Operators
+|       |                           |
+|-------|---------------------------|
+|`~`	| Unary bitwise complement  |
+|`<<` 	|Signed left shift			|
+|`>>`   |Signed right shift			|
+|`>>>`  |Unsigned right shift		|
+|`&`    |Bitwise AND				|
+|`^`    |Bitwise exclusive OR		|
+|`I`	|Bitwise inclusive OR		|
+
+???
+Show examples: BitDemo.java
+---
+
+# String
+
+- Reference: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html
+- No need to use constructor every time.
+- Immutable.
+- Concatenation with `+`
+- Equal evaluation: `myString.equals(otherString)`
+- `public static String.format(String format, Object... args)`
+- `StringBuilder` and `StringBuffer` to manipulate String
+- Important method: `Object.toString()`
+
+---
+
+# String
+
+- Creation:
+```java
+ String str = "Hi!";
+```
+--
+- Beware of `null`:
+```java
+ String nullString = null;
+
+ if (nullString != null) { // Check
+     ...
+ }
+
+ nullString.isEmpty(); // NPE!
+```
+--
+- Many useful features:
+
+    ```java
+    int length = s.length();
+    char firstChar = s.charAt(0);
+    char[] carr = s.toCharArray();
+
+    boolean isExecutable = s.endsWith(".exe");
+    boolean isEmpty = s.isEmpty();
+    int aidx = s.indexOf('a');
+    boolean hasEM = s.contains('!');
+
+    String upper = s.toUpperCase();
+    String hai = s.substring(1, 3);
+    String haiThere = hai + " there".
+    String[] haiThereArr = haiThere.split(" ");
+    ```    
+
+---
+# String
+- Iteration of its chars:
+    
+    ```java
+    for (int i=0; i<s.length(); ++i) {
+        char act = s.charAt(i);
+        ...
+    }
+
+    for (char act : s.toCharArray()) {
+        ...
+    }
+    ```
+--
+- `replaceAll()`, `split()`: use with regexps, see Pattern at http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html
+
+???
+- Check regex javadoc
+	- ask to write email regex
+	- http://www.webmonkey.com/2008/08/four_regular_expressions_to_check_email_addresses/
+	- show an online tester, like regexpal.com
+	
+--
+- Comparison: `equals()`
+    ```java
+    boolean b1 = "a" == "a";      // Might be true
+    boolean b2 = "a".equals("a"); // Expected behaviour
+    ```
+
+--
+- Don't forget: immutable structure!
+    ```java
+    String string = "AAAxAAA";
+    string.replace('x', 'A');
+    System.out.println(string); // "AAAxAAA"
+    string = string.replace('x', 'A');
+    System.out.println(string); // "AAAAAAA"
+    ```
+
+---
+# CharSeq's
+
+Use `StringBuilder`/`StringBuffer`:
+
+```java
+StringBuffer sb = new StringBuffer();
+sb.append("Hello ").append("World");
+sb.reverse();
+System.out.println( sb.toString() ); // "dlroW olleH"
+sb.reverse();
+sb.setCharAt(6, '-');
+System.out.println( sb.toString() ); // "Hello-World"
+sb.deleteCharAt(6);
+System.out.println( sb.toString() ); // "HelloWorld"
+sb.delete(0, sb.length() );
+System.out.println( sb.toString() ); // ""
+```
+
+- StringBuffer is thread-safe (since 1.0)
+- StringBuilder is not (since 1.5)
+
+???
+- Write a code to compare String + operator, StringBuilder.add() and StringBuffer.add() performance
+
+---
+
+# Primitives
+
+- Reference: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
+- Java is a statically typed language
+- Special data types in Java.
+- Fixed size memory footprint
+- Primitive types:
+  - `boolean`: can be `true` or `false`, default value: `false`
+  - `char`: a single 16-bit Unicode character 0 to 65,535, default value: `0`
+  - `byte`: small, signed number on 8 bit: -128 to 127, default: `0`
+  - `short`: 16 bit signed number: -32,768 to 32,767 default: `0`
+  - `int`: 32 bit signed number: -2,147,483,648 to 2,147,483,647 default: `0`
+  - `long`: 64 bit signed number: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807, default: `0L`
+  - `float`: 32 bit floating point number from 1.4e<sup>-45</sup> to 3.4e<sup>+38</sup>, default: `0.0f`
+  - `double`: 64 bit floating point number from 5e<sup>-324</sup> to 1.8e<sup>+308</sup>, default: `0.0d`
+
+---
+
+# Primitives
+- Each has its own wrapper class (`Integer`, `Double`, `Boolean`, ...)
+- *Autoboxing* and *unboxing* works automatically
+  - `Integer i = 1;`
+  - `int j = new Integer(2);`
+- Conversions
+  - Wider: automatic (byte --> int --> long)
+  - Otherwise: explicit cast required (`byte b = (byte) 10`)
+- String conversions:
+  - To string: `String s = "" + 1;` (be careful to the precedence!)
+  - From string: `Integer.parseInt("1")`, `Double.parseDouble("2.0")`, ...
+
+???
+- ET: Write a program to compare Integer.valueOf(), new Integer(), i = 127, 128, etc.
+  
+---
+# Hands on!
+## Fizz-Buzz Test
+Write a program that prints the numbers from 1 to 100. If the number can be divided by three, print `"Fizz"`, if the number can be divided by five, print `"Buzz"` instead of the number. If both condition holds, print `"FizzBuzz"` instead of the number.
+
+*Motivation* Coding Horror, [Why Can't Programmers... program?](http://www.codinghorror.com/blog/2007/02/why-cant-programmers-program.html)
+
+Sample output:
+	1
+	2
+	Fizz
+	4
+	Buzz
+	...
+	13
+	14
+	FizzBuzz
+---
+## Collatz-sequence
+
+Write a program that prints out the Collatz-sequence starting from `a_0 = N` (`N<100` is a command line argument and it must be checked) until `a_n = 1`. The sequence is generated in the following way:
+
+![Collatz-probl�ma](https://github.com/rlegendi/ELTE-javagyak/raw/master/01-bevezetes/collatz_equation.png "Collatz-probl�ma")
+
+Sample output:
+
+	> java Collatz 3
+	3 10 5 16 8 4 2 1
+	> java Collatz 5
+	5 16 8 4 2 1
+	> java Collatz 7
+	7 22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1
+
+[Details](http://mathworld.wolfram.com/CollatzProblem.html)
+
+---
+## C2F
+Write a small program that accepts two, and only two command line arguments. If the first parameter is 0, convert the second parameter from celsius to fahrenheit. Otherwise, do the conversion backwards.
+
+The way to do the first conversion is the following:
+
+		C = (F-32) * 5 / 9
+
+##Perfect numbers
+Write a program that can check if a given number is a _perfect number_ (a positive integer that is equal to the sum of its proper positive divisors, 1 included, the number is excluded). The four smallest such integers are 6, 28, 496, and 8128.
+
+---
+
+# Object
+
+- Reference: http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html
+- Root class of all other classes implicitly.
+- Class or instance?
+- Most important methods:
+  - `equals()`
+  - `hashCode()`
+  - `toString()`
+
+--
+
+# Arrays
+
+- Reference: http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html
+- Syntax:
+``` java
+int[] scores = new int[2];
+scores[0] = 10;
+scores[1] = scores[0];
+```
+
+--
+
+- In place initialization of multidimensional array:
+``` java
+String[][] names = {
+            {"Mr. ", "Mrs. ", "Ms. "},
+            {"Smith", "Jones"}
+        };
+// Mr. Smith
+System.out.println(names[0][0] + names[1][0]);
+// Ms. Jones
+System.out.println(names[0][2] + names[1][1]);
+```
+---
+# Arrays
+
+- There's a `T[]` type for every `T` type
+- It's a _reference_: may be `null`!
+- Indexing: from `0`
+- Out of bounds check: `ArrayIndexOutOfBoundsException`
+- Default values for the elements (null, 0, false, ...)
+
+--
+- Initialization:
+    ```java
+    // barr1, barr2, barr3 are equivalent
+    boolean[] barr1 = { true, false };
+    boolean[] barr2 = new boolean[] { true, false }; // as an expression, it's mandatory!
+    boolean[] barr3 = new boolean[2];
+    barr3[0] = true; barr3[1] = false;
+    ```
+--
+- Iteration:
+    ```java
+    int iarr[] = { 1, 2, 3, 4, 5 };
+
+    for (int i=0; i<iarr.length; ++i) {
+        System.out.println(iarr[i]);
+    }
+    ```
+---
+# Arrays
+
+- Multi dimension:
+    ```java
+    public static void enumerate(int[][] arr) {
+        for (int i=0; i < arr.length; ++i) {
+            for (int j=0; j < arr[i].length; ++j) {
+                System.out.print( arr[i][j] + " " );
+            }
+        }
+    }
+    ...
+    enumerate( new int[][] {
+	    {0, 1},
+	    {2, 3}
+    });
+    ```
+--
+- Initialization: first dimension has to be specified
+    ```java
+    int[][] arr = new int[5][];
+    ```
+
+---
+# Array type expressions
+New is required:
+```java
+public static int sum(int[] arr) { ... }
+
+public static void main(String[] args) {
+    int result = sum( new int[] {1, 2, 3} );
+}
+```
+
+# Utility class
+See java.util.Arrays, many useful features (toString(), fill(), binarySearch(), etc.).
+
+**Details:** http://download.oracle.com/javase/6/docs/api/java/util/Arrays.html
+
+???
+- Check source code of Arrays.java, examine 
+ - which ordering algorithm is applied for primitive types/objects
+ - which search algorithm is applied?
+
+
+
+http://www.docjar.com/html/api/java/util/Arrays.java.html
+---
+
+# Enumerations
+
+- Reference: http://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
+- Introduced in Java 5.0
+- Used for predefined set of constants, like days of week:
+``` java
+public enum Day {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+    THURSDAY, FRIDAY, SATURDAY 
+}
+```
+- Can be easily used in `switch` formula.
+- Could have data fields and constructors.
+
+---
+
+# Methods
+
+- Reference: http://docs.oracle.com/javase/tutorial/java/javaOO/methods.html
+- Method declaration:
+	`<access modifier> [abstract] <return type> <method name> (<parameter list>) [throws <exception list>] [{<method body>}]`
+--
+
+- Access modifiers reference: http://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html
+
+|Modifier         | Class | Package | Subclass | World |
+|-----------------|:-----:|:-------:|:--------:|:-----:|
+|`public`         | Y     | Y       | Y        | Y |
+|`protected`      | Y     | Y       | Y        | N |
+|*no modifiers*   | Y     | Y       | N        | N |
+|`private`        | Y     | N       | N        | N |
+--
+
+- Abstract methods has no body
+--
+
+- Method names can be overloaded:
+``` java
+public abstract class AbstractDrawer{
+	public abstract void draw(String s);
+	public abstract void draw(Integer i);
+}
+```
+
+--
+
+- Public entry point of a java program: 
+``` java
+public static void main(String[] args){
+}
+```
+---
+
+# Methods: notes
+- Method modifiers
+  - `abstract`: no implementation (cf. C++ pure virtual methods)
+  - `final`: cannot override
+  - `static`: static method (**Important:** static context!)
+  - Others: `strictfp`, `native`, `synchronized`, 
+- Return value: specific type or `void`
+- Naming conventions: `lowerCamelCase` format
+- Parameter passing: pass-by-value, everything (!)
+- Method signature
+
+???
+- Check 'parameteres' exercises
+- Ask attendees what will be the output
+---
+
+# Variable Scopes
+
+- Local variables
+  - E.g. counter in a loop
+- Method parameters
+  - for pass information to a method
+- Instance variables
+  - for state of an instance
+- Class variables
+  - E.g. count of instances
+
+---
+# User interaction
+```java
+java.io.Console c = System.console();
+String line = c.readLine();
+int lineAsInt = Integer.parseInt( line );
+```
+
+---
+# Hands on!
+- Put the solutions to proper packages (e.g., `hujj.euclid` and `hujj.quadratic`)
+- Parameters should be command line arguments (i.e., use the `args` array)
+- Always check the input of the program. If they are illegal, write a proper error message
+
+## Euclid
+Write a method that can calculate the greatest common divisor of two numbers:
+
+```java
+function gcd(a, b){
+    if a = 0
+       return b
+    while b != 0
+        if a > b
+           a := a - b
+        else
+           b := b - a
+    return a
+}
+```
+
+Do a recursive solution as well.
+
+---
+## Quadratic formula
+
+Write a method with the following signature that can calculate the roots of a quadratic equation:
+
+```java
+private static double[] sqroots(final double a, final double b, final double c) {
+    // ...
+}
+```
+
+The return value of the function should be:
+
+- An empty array (not `null`!) if `a == 0` or the discriminant is negative
+- An array with one element, if the discriminant is zero
+- An array with two elements, if the discriminant is positive
+
+---
+# Arrays
+1. Write a function which evaluates the sum and avg of an array
+1. Write a function which norms the elements of an array (their sum ~= 1)
+1. Write a function which joins the elements of an array into one string. The separator character must be optional, e.g.
+```java
+int[] arr = {1, 2, 3};
+System.out.println(join(arr)); // 1, 2, 3
+System.out.println(join(arr, ';')); // 1; 2; 3
+```
+
+---
+
+# Multi arrays
+1. Write a function that can pretty print a given two-dimensional array:
+```java
+double[][] arr = new double[3][3];
+arr[1][1] = 1;
+System.out.println( asMatrix( arr ) );
+```
+Sample output:
+```
+0.0 0.0 0.0
+0.0 1.0 0.0
+0.0 0.0 0.0
+```
+1. Write a function that can calculate the sum of the rows, columns and a diagonal of a two-dimensional array and prints it in the following way:
+```
+0 1 2 | 3
+1 2 3 | 6
+2 3 4 | 9
+------/
+3 6 9   6
+```
+
+---
+#Strings
+1. Write a function that capitalizes the first character of a given string
+1. Write a function that changes all Hungarian characters to the proper English ones
+1. Write a function that encodes a given string by iterating its characters, and XORs it with a given char
+1. Write the decoding function (XOR-ing two times with the same value results in the original value)
+
+---
+
+class: center, middle
+# Q & A
+
+    </textarea>
+    <script src="http://gnab.github.io/remark/downloads/remark-0.5.9.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
