@@ -1,3 +1,4 @@
+import java.util.*;
 
 class ZeroParameterException extends RuntimeException {
     public ZeroParameterException() {
@@ -29,6 +30,16 @@ public class Main {
         //    System.err.println("finally - over!");
         //}
 		
-		double res = divide(4, 0);
+		//double res = divide(4, 0);
+		
+		List list = new ArrayList();
+
+		list.add( new Integer(1) );
+		list.add( new String("lolol") );
+		
+		for (int i=0; i < list.size(); ++i) {
+			Integer act = (Integer) list.get(i);
+			System.out.println(act);
+		}
     }
 }
