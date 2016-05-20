@@ -1,0 +1,3 @@
+This is a test file:
+Count the letters of each word!
+But dont count non-alpabetic characters.
