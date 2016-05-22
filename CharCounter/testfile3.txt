@@ -1,0 +1,8 @@
+hello dear program
+i want you to count each word in this text file
+text text
+text text
+text text
+text text
+thank you
+you are very good program
