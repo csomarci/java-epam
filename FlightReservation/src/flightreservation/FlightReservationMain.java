@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import travel.Flight;
+import traveler.FrequentFlyerState;
+import traveler.Group;
+import traveler.Passenger;
+
 public class FlightReservationMain {
 
 	public static void main(String[] args) {

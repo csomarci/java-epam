@@ -3,6 +3,11 @@ package flightreservation;
 import java.util.ArrayList;
 import java.util.List;
 
+import travel.Flight;
+import travel.Itinerary;
+import travel.Ticket;
+import traveler.Group;
+
 public class Trip {
 
 	private Group group;
